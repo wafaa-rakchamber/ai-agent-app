@@ -1,0 +1,7 @@
+<div>
+  <h2>Count: {{ countValue }}</h2>
+  <button (click)="increment()">+{{ step }}</button>
+  <button (click)="decrement()">-{{ step }}</button>
+  <button (click)="reset()">Reset</button>
+  <p>History: {{ historyValue.join(', ') }}</p>
+</div>
