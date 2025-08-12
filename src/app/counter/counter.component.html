@@ -1,9 +1,42 @@
 <div class="counter">
-  <h2>Count: {{ count() }}</h2>
+  <h2
+    class="count"
+    [class.positive]="isPositive()"
+    [class.negative]="isNegative()"
+    [class.neutral]="isNeutral()"
+    aria-live="polite"
+  >
+    Count: {{ count() }}
+  </h2>
+
   <div class="actions">
-    <button type="button" (click)="increment()">+{{ step() }}</button>
-    <button type="button" (click)="decrement()">-{{ step() }}</button>
-    <button type="button" (click)="reset()">Reset</button>
+    <button
+      type="button"
+      class="btn increment"
+      (click)="increment()"
+      [attr.aria-label]="'Increase by ' + step()"
+    >
+      +{{ step() }}
+    </button>
+
+    <button
+      type="button"
+      class="btn decrement"
+      (click)="decrement()"
+      [attr.aria-label]="'Decrease by ' + step()"
+    >
+      -{{ step() }}
+    </button>
+
+    <button
+      type="button"
+      class="btn reset"
+      (click)="reset()"
+      aria-label="Reset counter"
+    >
+      Reset
+    </button>
   </div>
-  <p>History: {{ history().join(', ') }}</p>
+
+  <p class="history">History: {{ history().join(', ') }}</p>
 </div>
