@@ -1,0 +1,5 @@
+<div class="todo-item">
+  <span [class.completed]="todo.completed">{{ todo.text }}</span>
+  <button (click)="onToggle && onToggle(todo.id)">Toggle</button>
+  <button (click)="onDelete && onDelete(todo.id)">Delete</button>
+</div>

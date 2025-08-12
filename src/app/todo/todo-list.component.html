@@ -1,0 +1,7 @@
+<div class="todo-list">
+  <app-todo-item *ngFor="let todo of todos"
+    [todo]="todo"
+    [onToggle]="onToggle"
+    [onDelete]="onDelete">
+  </app-todo-item>
+</div>

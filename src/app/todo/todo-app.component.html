@@ -1,0 +1,5 @@
+<div class="todo-app">
+  <h2>Todo App</h2>
+  <app-add-todo (add)="addTodo($event)"></app-add-todo>
+  <app-todo-list [todos]="todos" [onToggle]="toggleTodo.bind(this)" [onDelete]="deleteTodo.bind(this)"></app-todo-list>
+</div>
