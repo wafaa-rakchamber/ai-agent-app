@@ -108,10 +108,12 @@ import { environment } from '../../environments/environment';
                 <span class="feature-icon">📊</span>
                 <span class="feature-text">Projects Management</span>
               </button>
+              
               <button class="feature-button" (click)="navigateToStories()">
                 <span class="feature-icon">📚</span>
                 <span class="feature-text">Story Management</span>
               </button>
+
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
                 <span class="feature-text">Todo App</span>
@@ -119,6 +121,10 @@ import { environment } from '../../environments/environment';
               <button class="feature-button" (click)="navigateToHello()">
                 <span class="feature-icon">👋</span>
                 <span class="feature-text">Hello Component</span>
+              </button>
+              <button class="feature-button" (click)="navigateToUsers()">
+                <span class="feature-icon">👥</span>
+                <span class="feature-text">Users Management</span>
               </button>
               <button class="feature-button" disabled>
                 <span class="feature-icon">🏗️</span>
@@ -200,6 +206,10 @@ export class DashboardComponent {
 
   navigateToHello(): void {
     this.router.navigate(['/hello']);
+  }
+
+  navigateToUsers(): void {
+    this.router.navigate(['/users']);
   }
 
   testHealthCheck(): void {
