@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, tap, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface LoginRequest {
   email: string;
@@ -32,9 +33,9 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   
-  private readonly baseUrl = 'http://localhost:3000';
-  private readonly tokenKey = 'authToken';
-  private readonly userKey = 'authUser';
+  private readonly baseUrl = environment.apiUrl;
+  private readonly tokenKey = environment.auth.tokenKey;
+  private readonly userKey = environment.auth.userKey;
 
   // Use signals for reactive state management
   private readonly authState = signal<AuthState>({
@@ -76,7 +77,7 @@ export class AuthService {
    * Login user with email and password
    */
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/api/auth/login`, credentials)
+    return this.http.post<LoginResponse>(`${this.baseUrl}${environment.apiEndpoints.auth}/login`, credentials)
       .pipe(
         tap(response => {
           this.setAuth(response.token, response.user);

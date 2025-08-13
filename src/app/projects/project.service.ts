@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project, ApiResponse } from './project.interface';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ import { AuthService } from '../auth/auth.service';
 export class ProjectService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
-  // Use direct URL to bypass CORS issues - your backend should handle CORS
-  private readonly apiUrl = 'http://localhost:3000/api/projects';
+  // Use environment configuration for API URL
+  private readonly apiUrl = `${environment.apiUrl}${environment.apiEndpoints.projects}`;
 
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
