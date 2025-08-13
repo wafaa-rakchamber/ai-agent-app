@@ -1,0 +1,203 @@
+<div class="projects-container">
+  <div class="header">
+    <div class="header-left">
+      <h1>Projects Management</h1>
+      @if (currentUser(); as user) {
+        <p class="user-info">Managing projects for: <strong>{{ user.name }}</strong> ({{ user.email }})</p>
+      }
+    </div>
+    <div class="header-actions">
+      <button 
+        type="button" 
+        class="btn btn-secondary"
+        (click)="refreshProjects()"
+        [disabled]="loading()">
+        <span [class]="loading() ? 'loading' : ''">↻</span> Refresh
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary"
+        (click)="showAddForm()"
+        [disabled]="loading()">
+        + Add Project
+      </button>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)">×</button>
+    </div>
+  }
+
+  @if (showForm()) {
+    <div class="form-overlay">
+      <div class="form-modal">
+        <div class="form-header">
+          <h2>{{ formTitle() }}</h2>
+          <button type="button" class="btn-close" (click)="cancelForm()">×</button>
+        </div>
+
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
+          <div class="form-group">
+            <label for="name">Project Name *</label>
+            <input 
+              id="name"
+              type="text" 
+              formControlName="name" 
+              class="form-control"
+              [class.error]="getFieldError('name')"
+              placeholder="Enter project name">
+            @if (getFieldError('name')) {
+              <div class="field-error">{{ getFieldError('name') }}</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea 
+              id="description"
+              formControlName="description" 
+              class="form-control description-input"
+              rows="4"
+              placeholder="Enter a detailed project description..."></textarea>
+            <small class="field-hint">Provide a comprehensive description of the project goals, requirements, and key details.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="startDate">Start Date *</label>
+            <input 
+              id="startDate"
+              type="date" 
+              formControlName="startDate" 
+              class="form-control"
+              [class.error]="getFieldError('startDate')">
+            @if (getFieldError('startDate')) {
+              <div class="field-error">{{ getFieldError('startDate') }}</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="deadLine">Deadline *</label>
+            <input 
+              id="deadLine"
+              type="date" 
+              formControlName="deadLine" 
+              class="form-control"
+              [class.error]="getFieldError('deadLine')">
+            @if (getFieldError('deadLine')) {
+              <div class="field-error">{{ getFieldError('deadLine') }}</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status *</label>
+            <select 
+              id="status"
+              formControlName="status" 
+              class="form-control">
+              <option value="New">New</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="On Hold">On Hold</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="cancelForm()">
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [disabled]="projectForm.invalid || loading()">
+              {{ isEditing() ? 'Update' : 'Create' }} Project
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <div class="table-container">
+    @if (loading() && !hasProjects()) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading projects...</p>
+      </div>
+    } @else if (!hasProjects() && !loading()) {
+      <div class="empty-state">
+        <h3>No Projects Found</h3>
+        <p>Get started by creating your first project.</p>
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          (click)="showAddForm()">
+          Create First Project
+        </button>
+      </div>
+    } @else {
+      <table class="projects-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (project of projects(); track project.id) {
+            <tr>
+              <td>{{ project.id }}</td>
+              <td class="project-name">{{ project.name }}</td>
+              <td class="project-description">
+                <div 
+                  [class]="getDescriptionClass(project.description)"
+                  [title]="project.description || 'No description provided'">
+                  {{ formatDescription(project.description) }}
+                </div>
+              </td>
+              <td class="date-column">
+                {{ project.startDate | date:'mediumDate' }}
+              </td>
+              <td class="date-column">
+                {{ project.deadLine | date:'mediumDate' }}
+              </td>
+              <td>
+                <span class="status-badge" [class]="'status-' + project.status.toLowerCase().replace(' ', '-')">
+                  {{ project.status }}
+                </span>
+              </td>
+              <td class="actions-column">
+                <div class="action-buttons">
+                  <button 
+                    type="button"
+                    class="btn btn-sm btn-outline"
+                    (click)="editProject(project)"
+                    [disabled]="loading()">
+                    Edit
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteProject(project)"
+                    [disabled]="loading()">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

@@ -1,2 +1,14 @@
+<nav class="main-nav">
+  <div class="nav-container">
+    <h1 class="nav-title">{{ title() }}</h1>
+    <div class="nav-links">
+      <a routerLink="/projects" routerLinkActive="active">Projects</a>
+      <a routerLink="/todo" routerLinkActive="active">Todo</a>
+      <a routerLink="/hello" routerLinkActive="active">Hello</a>
+    </div>
+  </div>
+</nav>
 
-<router-outlet />
+<main class="main-content">
+  <router-outlet />
+</main>

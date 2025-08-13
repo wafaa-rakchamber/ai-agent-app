@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { ApiTestService } from '../services/api-test.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -103,6 +104,10 @@ import { ApiTestService } from '../services/api-test.service';
           <div class="card">
             <h3>Available Features</h3>
             <div class="features-list">
+              <button class="feature-button" (click)="navigateToProjects()">
+                <span class="feature-icon">📊</span>
+                <span class="feature-text">Projects Management</span>
+              </button>
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
                 <span class="feature-text">Todo App</span>
@@ -122,16 +127,22 @@ import { ApiTestService } from '../services/api-test.service';
             <h3>API Information</h3>
             <div class="api-info">
               <div class="api-item">
-                <strong>Base URL:</strong> http://localhost:3000
+                <strong>Base URL:</strong> {{ apiBaseUrl }}
               </div>
               <div class="api-item">
-                <strong>Auth Endpoint:</strong> /api/auth/login
+                <strong>Auth Endpoint:</strong> {{ authEndpoint }}
+              </div>
+              <div class="api-item">
+                <strong>Projects Endpoint:</strong> {{ projectsEndpoint }}
               </div>
               <div class="api-item">
                 <strong>Token Type:</strong> Bearer
               </div>
               <div class="api-item">
                 <strong>Token Storage:</strong> localStorage
+              </div>
+              <div class="api-item">
+                <strong>Environment:</strong> {{ environment }}
               </div>
             </div>
           </div>
@@ -155,6 +166,12 @@ export class DashboardComponent {
     return token ? `${token.substring(0, 20)}...` : '';
   });
 
+  // Environment-based computed properties
+  readonly apiBaseUrl = environment.apiUrl;
+  readonly authEndpoint = `${environment.apiUrl}${environment.apiEndpoints.auth}/login`;
+  readonly projectsEndpoint = `${environment.apiUrl}${environment.apiEndpoints.projects}`;
+  readonly environment = environment.production ? 'Production' : 'Development';
+
   // Test states
   readonly isTestingHealth = signal(false);
   readonly isTestingProfile = signal(false);
@@ -163,6 +180,10 @@ export class DashboardComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  navigateToProjects(): void {
+    this.router.navigate(['/projects']);
   }
 
   navigateToTodo(): void {
