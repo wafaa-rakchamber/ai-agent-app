@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StoryComponent } from './story/story.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ProjectsComponent } from './projects/projects.component';
+import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'hello', component: Hello, canActivate: [AuthGuard] },
   { path: 'todo', component: TodoAppComponent, canActivate: [AuthGuard] },
   { path: 'stories', component: StoryComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];

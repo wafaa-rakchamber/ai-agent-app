@@ -1,0 +1,61 @@
+<div class="users-page">
+  <div class="header">
+    <h2>Users Management</h2>
+    <button class="add-btn" (click)="showAddForm()" [disabled]="loading()">
+      Add New User
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  }
+
+  @if (showForm()) {
+    <app-user-form 
+      [user]="editingUser()"
+      [loading]="formLoading()"
+      (save)="saveUser($event)"
+      (cancel)="hideForm()">
+    </app-user-form>
+  }
+
+  @if (loading()) {
+    <div class="loading">Loading users...</div>
+  } @else if (users().length === 0 && !error()) {
+    <div class="no-users">No users found. Add your first user!</div>
+  } @else {
+    <div class="users-grid">
+      @for (user of users(); track user.id) {
+        <div class="user-card" [class.current-user]="user.id === currentUserId()">
+          <div class="user-info">
+            <h3>{{ user.name }}</h3>
+            <p class="email">{{ user.email }}</p>
+            @if (user.id) {
+              <span class="user-id">ID: {{ user.id }}</span>
+            }
+          </div>
+          <div class="user-actions">
+            @if (user.id === currentUserId()) {
+              <button class="edit-btn" (click)="showEditForm(user)" [disabled]="loading()">
+                Edit Profile
+              </button>
+            } @else {
+              <button class="edit-btn" (click)="showEditNotAllowed()" [disabled]="loading()">
+                View Only
+              </button>
+            }
+            @if (user.id === currentUserId()) {
+              <button class="delete-btn" (click)="deleteUser(user)" [disabled]="loading()">
+                Delete Account
+              </button>
+            } @else {
+              <button class="delete-btn" (click)="deleteNotAllowed()" [disabled]="loading()">
+                Protected
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
