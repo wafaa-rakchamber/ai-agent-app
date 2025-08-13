@@ -4,6 +4,7 @@ import { TodoAppComponent } from './todo/todo-app.component';
 import { LoginComponent } from './auth/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ProjectsComponent } from './projects/projects.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'hello', component: Hello, canActivate: [AuthGuard] },
   { path: 'todo', component: TodoAppComponent, canActivate: [AuthGuard] },
   { path: 'users', loadComponent: () => import('./users/users.component').then(m => m.UsersComponent), canActivate: [AuthGuard] },
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];

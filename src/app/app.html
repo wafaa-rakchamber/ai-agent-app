@@ -1,3 +1,14 @@
+<nav class="main-nav">
+  <div class="nav-container">
+    <h1 class="nav-title">{{ title() }}</h1>
+    <div class="nav-links">
+      <a routerLink="/projects" routerLinkActive="active">Projects</a>
+      <a routerLink="/todo" routerLinkActive="active">Todo</a>
+      <a routerLink="/hello" routerLinkActive="active">Hello</a>
+      <a routerLink="/users" routerLinkActive="active">Users</a>
+    </div>
+  </div>
+</nav>
 
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 40vh; background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%); border-radius: 1rem; box-shadow: 0 4px 16px rgba(60, 60, 120, 0.08); margin: 2rem auto; max-width: 600px; padding: 2.5rem 1.5rem;">
 	<h1 style="font-size: 2.5rem; color: #6366f1; font-weight: 700; margin-bottom: 1.5rem;">Fast & Modern</h1>
@@ -5,4 +16,6 @@
 	<button style="background: #6366f1; color: #fff; border: none; border-radius: 0.5rem; padding: 0.9rem 2rem; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.2s; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);" routerLink="/users" >Go to Users Page</button>
 </div>
 
-<router-outlet />
+<main class="main-content">
+  <router-outlet />
+</main>
