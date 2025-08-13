@@ -12,7 +12,7 @@
         class="btn btn-secondary"
         (click)="refreshProjects()"
         [disabled]="loading()">
-        <span [class]="loading() ? 'loading' : ''">↻</span> Refresh
+        <span [class.loading]="loading()">↻</span> Refresh
       </button>
       <button 
         type="button" 
@@ -160,7 +160,8 @@
               <td class="project-name">{{ project.name }}</td>
               <td class="project-description">
                 <div 
-                  [class]="getDescriptionClass(project.description)"
+                  [class.empty-description]="!project.description || project.description.trim().length === 0"
+                  [class.long-description]="project.description && project.description.length > 50"
                   [title]="project.description || 'No description provided'">
                   {{ formatDescription(project.description) }}
                 </div>
@@ -172,7 +173,11 @@
                 {{ project.deadLine | date:'mediumDate' }}
               </td>
               <td>
-                <span class="status-badge" [class]="'status-' + project.status.toLowerCase().replace(' ', '-')">
+                <span class="status-badge" 
+                      [class.status-new]="project.status.toLowerCase() === 'new'"
+                      [class.status-in-progress]="project.status.toLowerCase().replace(' ', '-') === 'in-progress'"
+                      [class.status-completed]="project.status.toLowerCase() === 'completed'"
+                      [class.status-on-hold]="project.status.toLowerCase().replace(' ', '-') === 'on-hold'">
                   {{ project.status }}
                 </span>
               </td>

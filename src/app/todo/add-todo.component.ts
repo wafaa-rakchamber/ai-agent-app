@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-todo',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.scss']

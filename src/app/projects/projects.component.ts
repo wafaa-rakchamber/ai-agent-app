@@ -200,17 +200,7 @@ export class ProjectsComponent implements OnInit {
     return null;
   }
 
-  // Description formatting helpers
-  getDescriptionClass(description: string | undefined): string {
-    if (!description || description.trim().length === 0) {
-      return 'empty-description';
-    }
-    if (description.length > 50) {
-      return 'long-description';
-    }
-    return '';
-  }
-
+  // Description formatting helper
   formatDescription(description: string | undefined): string {
     if (!description || description.trim().length === 0) {
       return 'No description provided';

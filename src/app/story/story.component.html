@@ -196,7 +196,11 @@
     } @else {
       <div class="stories-grid">
         @for (story of filteredStories(); track story.id) {
-          <div class="story-card" [class]="'status-' + story.status.toLowerCase()">
+          <div class="story-card" 
+               [class.status-new]="story.status.toLowerCase() === 'new'"
+               [class.status-inprogress]="story.status.toLowerCase() === 'inprogress'"
+               [class.status-closed]="story.status.toLowerCase() === 'closed'"
+               [class.status-canceled]="story.status.toLowerCase() === 'canceled'">
             <div class="story-header">
               <h3>{{ story.title }}</h3>
               <div class="story-actions">
@@ -234,7 +238,11 @@
               </div>
               
               <div class="story-status">
-                <span class="status-badge" [class]="'status-' + story.status.toLowerCase()">
+                <span class="status-badge" 
+                      [class.status-new]="story.status.toLowerCase() === 'new'"
+                      [class.status-inprogress]="story.status.toLowerCase() === 'inprogress'"
+                      [class.status-closed]="story.status.toLowerCase() === 'closed'"
+                      [class.status-canceled]="story.status.toLowerCase() === 'canceled'">
                   {{ story.status }}
                 </span>
               </div>
