@@ -108,10 +108,7 @@ import { environment } from '../../environments/environment';
                 <span class="feature-icon">📊</span>
                 <span class="feature-text">Projects Management</span>
               </button>
-              <button class="feature-button" disabled>
-                <span class="feature-icon">🚀</span>
-                <span class="feature-text">Fast & Modern - Built with Angular 20 for optimal performance</span>
-              </button>
+
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
                 <span class="feature-text">Todo App</span>
