@@ -39,7 +39,7 @@ export class StoryService {
   /**
    * Get story by ID
    */
-  getStoryById(id: string): Observable<Story> {
+  getStoryById(id: number): Observable<Story> {
     const currentUser = this.authService.getCurrentUser();
     console.log('Making GET request to:', `${this.baseUrl}/api/stories/${id}`, 'for user:', currentUser?.email);
     return this.http.get<Story>(`${this.baseUrl}/api/stories/${id}`, {
@@ -61,7 +61,7 @@ export class StoryService {
   /**
    * Update an existing story
    */
-  updateStory(id: string, story: Partial<StoryFormData>): Observable<Story> {
+  updateStory(id: number, story: Partial<StoryFormData>): Observable<Story> {
     const currentUser = this.authService.getCurrentUser();
     console.log('Making PUT request to:', `${this.baseUrl}/api/stories/${id}`, 'for user:', currentUser?.email, 'with data:', story);
     return this.http.put<Story>(`${this.baseUrl}/api/stories/${id}`, story, {
@@ -72,7 +72,7 @@ export class StoryService {
   /**
    * Delete a story
    */
-  deleteStory(id: string): Observable<void> {
+  deleteStory(id: number): Observable<void> {
     const currentUser = this.authService.getCurrentUser();
     console.log('Making DELETE request to:', `${this.baseUrl}/api/stories/${id}`, 'for user:', currentUser?.email);
     return this.http.delete<void>(`${this.baseUrl}/api/stories/${id}`, {

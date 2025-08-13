@@ -147,7 +147,7 @@
       <div class="filter-controls">
         <select 
           (change)="filterByProject($event)" 
-          [value]="selectedProjectFilter()"
+          [value]="selectedProjectFilter() || ''"
           class="filter-select"
         >
           <option value="">All Projects</option>
