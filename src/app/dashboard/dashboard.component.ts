@@ -103,6 +103,10 @@ import { ApiTestService } from '../services/api-test.service';
           <div class="card">
             <h3>Available Features</h3>
             <div class="features-list">
+              <button class="feature-button" (click)="navigateToProjects()">
+                <span class="feature-icon">📊</span>
+                <span class="feature-text">Projects Management</span>
+              </button>
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
                 <span class="feature-text">Todo App</span>
@@ -163,6 +167,10 @@ export class DashboardComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  navigateToProjects(): void {
+    this.router.navigate(['/projects']);
   }
 
   navigateToTodo(): void {
