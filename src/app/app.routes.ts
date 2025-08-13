@@ -11,5 +11,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'hello', component: Hello, canActivate: [AuthGuard] },
   { path: 'todo', component: TodoAppComponent, canActivate: [AuthGuard] },
+  { path: 'users', loadComponent: () => import('./users/users.component').then(m => m.UsersComponent), canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/login' }
 ];
