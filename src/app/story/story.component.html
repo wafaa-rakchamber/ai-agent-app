@@ -1,0 +1,247 @@
+<div class="story-container">
+  <header class="story-header">
+    <h1>Story Management</h1>
+    <button 
+      class="btn btn-primary"
+      (click)="showAddForm()"
+      [disabled]="isLoading()"
+    >
+      Add New Story
+    </button>
+  </header>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+    </div>
+  }
+
+  @if (success()) {
+    <div class="alert alert-success">
+      {{ success() }}
+    </div>
+  }
+
+  <!-- Story Form -->
+  @if (showForm()) {
+    <div class="form-container">
+      <div class="form-header">
+        <h2>{{ editingStory() ? 'Edit' : 'Add New' }} Story</h2>
+        <button class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+      </div>
+      
+      <form [formGroup]="storyForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input 
+              id="title"
+              type="text" 
+              formControlName="title"
+              [class.error]="storyForm.get('title')?.invalid && storyForm.get('title')?.touched"
+            />
+            @if (storyForm.get('title')?.errors?.['required'] && storyForm.get('title')?.touched) {
+              <span class="error-text">Title is required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="projectId">Project *</label>
+            <select 
+              id="projectId"
+              formControlName="projectId"
+              [class.error]="storyForm.get('projectId')?.invalid && storyForm.get('projectId')?.touched"
+            >
+              <option value="">Select a project</option>
+              @for (project of projects(); track project.id) {
+                <option [value]="project.id">{{ project.name }}</option>
+              }
+            </select>
+            @if (storyForm.get('projectId')?.errors?.['required'] && storyForm.get('projectId')?.touched) {
+              <span class="error-text">Project is required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status *</label>
+            <select 
+              id="status"
+              formControlName="status"
+              [class.error]="storyForm.get('status')?.invalid && storyForm.get('status')?.touched"
+            >
+              @for (status of statusOptions; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="StoryPoint">Story Points *</label>
+            <input 
+              id="StoryPoint"
+              type="number" 
+              formControlName="StoryPoint"
+              min="1"
+              max="20"
+              [class.error]="storyForm.get('StoryPoint')?.invalid && storyForm.get('StoryPoint')?.touched"
+            />
+            @if (storyForm.get('StoryPoint')?.errors?.['required'] && storyForm.get('StoryPoint')?.touched) {
+              <span class="error-text">Story points are required</span>
+            }
+            @if (storyForm.get('StoryPoint')?.errors?.['min'] && storyForm.get('StoryPoint')?.touched) {
+              <span class="error-text">Story points must be at least 1</span>
+            }
+            @if (storyForm.get('StoryPoint')?.errors?.['max'] && storyForm.get('StoryPoint')?.touched) {
+              <span class="error-text">Story points cannot exceed 20</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="iteration">Iteration</label>
+            <input 
+              id="iteration"
+              type="text" 
+              formControlName="iteration"
+              placeholder="e.g., Sprint 1"
+            />
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">Description</label>
+          <textarea 
+            id="description"
+            formControlName="description"
+            rows="4"
+            placeholder="Enter story description..."
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="storyForm.invalid || isLoading()"
+          >
+            @if (isLoading()) {
+              <span class="loading-spinner"></span>
+            }
+            {{ editingStory() ? 'Update' : 'Create' }} Story
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="cancelForm()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Stories List -->
+  <div class="stories-section">
+    <div class="section-header">
+      <h2>Stories</h2>
+      <div class="filter-controls">
+        <select 
+          (change)="filterByProject($event)" 
+          [value]="selectedProjectFilter()"
+          class="filter-select"
+        >
+          <option value="">All Projects</option>
+          @for (project of projects(); track project.id) {
+            <option [value]="project.id" [selected]="selectedProjectFilter() === project.id">
+              {{ project.name }}
+            </option>
+          }
+        </select>
+        <select 
+          (change)="filterByStatus($event)" 
+          [value]="selectedStatusFilter()"
+          class="filter-select"
+        >
+          <option value="">All Status</option>
+          @for (status of statusOptions; track status) {
+            <option [value]="status" [selected]="selectedStatusFilter() === status">
+              {{ status }}
+            </option>
+          }
+        </select>
+        @if (hasActiveFilters()) {
+          <button 
+            class="btn btn-sm btn-secondary"
+            (click)="clearFilters()"
+            title="Clear all filters"
+          >
+            Clear Filters ({{ filteredStories().length }}/{{ stories().length }})
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (isLoading() && !showForm()) {
+      <div class="loading-container">
+        <span class="loading-spinner"></span>
+        <span>Loading stories...</span>
+      </div>
+    } @else if (filteredStories().length === 0) {
+      <div class="empty-state">
+        <p>No stories found.</p>
+        <button class="btn btn-primary" (click)="showAddForm()">
+          Create your first story
+        </button>
+      </div>
+    } @else {
+      <div class="stories-grid">
+        @for (story of filteredStories(); track story.id) {
+          <div class="story-card" [class]="'status-' + story.status.toLowerCase()">
+            <div class="story-header">
+              <h3>{{ story.title }}</h3>
+              <div class="story-actions">
+                <button 
+                  class="btn btn-sm btn-secondary"
+                  (click)="editStory(story)"
+                  title="Edit"
+                >
+                  ✏️
+                </button>
+                <button 
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteStory(story.id!)"
+                  title="Delete"
+                  [disabled]="isLoading()"
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+            
+            <div class="story-details">
+              <p class="description">{{ story.description || 'No description' }}</p>
+              
+              <div class="story-meta">
+                <span class="project-name">
+                  📁 {{ getProjectName(story.projectId) }}
+                </span>
+                <span class="iteration">
+                  🔄 {{ story.iteration || 'No iteration' }}
+                </span>
+                <span class="story-points">
+                  📊 {{ story.StoryPoint }} points
+                </span>
+              </div>
+              
+              <div class="story-status">
+                <span class="status-badge" [class]="'status-' + story.status.toLowerCase()">
+                  {{ story.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
