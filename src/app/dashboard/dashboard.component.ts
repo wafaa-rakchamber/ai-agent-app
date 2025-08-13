@@ -108,6 +108,11 @@ import { environment } from '../../environments/environment';
                 <span class="feature-icon">📊</span>
                 <span class="feature-text">Projects Management</span>
               </button>
+              
+              <button class="feature-button" (click)="navigateToStories()">
+                <span class="feature-icon">📚</span>
+                <span class="feature-text">Story Management</span>
+              </button>
 
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
@@ -189,6 +194,10 @@ export class DashboardComponent {
 
   navigateToProjects(): void {
     this.router.navigate(['/projects']);
+  }
+
+  navigateToStories(): void {
+    this.router.navigate(['/stories']);
   }
 
   navigateToTodo(): void {
