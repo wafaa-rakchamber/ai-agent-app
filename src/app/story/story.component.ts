@@ -55,7 +55,22 @@ export class StoryComponent implements OnInit {
     if (statusFilter && statusFilter.trim() !== '') {
       console.log('Filtering by status:', statusFilter);
       filtered = filtered.filter(story => story.status === statusFilter);
-      console.log('Stories after status filter:', filtered);
+    
+    
+    
+    if (projectFilter !== null) {
+      
+      filtered = filtered.filter(story => {
+        
+        return story.projectId === projectFilter;
+      });
+      
+    }
+    
+    if (statusFilter && statusFilter.trim() !== '') {
+      
+      filtered = filtered.filter(story => story.status === statusFilter);
+      
     }
     
     return filtered;
