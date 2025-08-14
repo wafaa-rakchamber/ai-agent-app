@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Angular Development Server
+  frontend-dev:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    container_name: ai-agent-app-dev
+    command: sh -c "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+
+networks:
+  app-network:
+    driver: bridge

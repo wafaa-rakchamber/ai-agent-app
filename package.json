@@ -10,7 +10,12 @@
     "build:dev": "ng build --configuration development",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "docker:build": "docker build -t ai-agent-app .",
+    "docker:run": "docker run -p 4200:80 ai-agent-app",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:prod": "docker-compose up",
+    "docker:stop": "docker-compose down"
   },
   "prettier": {
     "overrides": [
