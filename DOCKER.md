@@ -1,6 +1,6 @@
 # Docker Containerization Guide
 
-This document explains how to run the AI Agent App using Docker containers.
+This document explains how to run the AI Agent App frontend using Docker containers.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ docker run -p 4200:80 -e NODE_ENV=production ai-agent-app
 ### Using Docker Compose
 
 ```bash
-# Start all services
+# Start frontend service
 docker-compose up
 
 # Start in background
@@ -94,6 +94,16 @@ docker-compose logs -f frontend
 - `NODE_ENV=development`
 - `CHOKIDAR_USEPOLLING=true` (for file watching in containers)
 
+## Backend Integration
+
+This frontend container is designed to work with your separate backend project. You can:
+
+1. **Development**: Use the mock data service (already configured)
+2. **Production**: Connect to your external backend by:
+   - Setting `useMockData = false` in `StoryService`
+   - Configuring proxy settings in `proxy.conf.json`
+   - Or adding nginx proxy configuration for your backend URL
+
 ## Troubleshooting
 
 ### Port Already in Use
@@ -127,7 +137,7 @@ docker build --no-cache -t ai-agent-app .
 ## Customization
 
 ### Custom Nginx Configuration
-Edit `nginx.conf` to modify server settings.
+Edit `nginx.conf` to modify server settings or add proxy configuration for your backend.
 
 ### Different Port
 Change the port mapping in `docker-compose.yml`:
@@ -136,8 +146,12 @@ ports:
   - "8080:80"  # Use port 8080 instead of 4200
 ```
 
-### API Backend Integration
-The nginx configuration includes a proxy setup for `/api/` routes that forwards to a backend service on port 3000.
+### Connecting to External Backend
+To connect to your separate backend project:
+
+1. Update `environment.ts` with your backend URL
+2. Set `useMockData = false` in `StoryService`  
+3. Configure CORS on your backend to allow requests from the frontend origin
 
 ## Performance Optimization
 
