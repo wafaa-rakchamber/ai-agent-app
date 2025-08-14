@@ -222,7 +222,10 @@ export class StoryComponent implements OnInit {
     console.log('Filter by project - Selected value:', selectedValue, 'Parsed value:', parsedValue);
     console.log('Current stories:', this.stories());
     this.selectedProjectFilter.set(parsedValue);
-    console.log('Filtered stories after filter:', this.filteredStories());
+    
+    
+    this.selectedProjectFilter.set(parsedValue);
+    
   }
 
   filterByStatus(event: Event): void {
