@@ -24,7 +24,7 @@ export class StoryComponent implements OnInit {
   success = signal<string | null>(null);
   showForm = signal(false);
   editingStory = signal<Story | null>(null);
-  selectedProjectFilter = signal<string>('');
+  selectedProjectFilter = signal<number | null>(null);
   selectedStatusFilter = signal<string>('');
 
   // Form
@@ -40,12 +40,36 @@ export class StoryComponent implements OnInit {
     const projectFilter = this.selectedProjectFilter();
     const statusFilter = this.selectedStatusFilter();
     
-    if (projectFilter && projectFilter.trim() !== '') {
-      filtered = filtered.filter(story => story.projectId === projectFilter);
+    console.log('Computing filtered stories - Project filter:', projectFilter, 'Status filter:', statusFilter);
+    
+    if (projectFilter !== null) {
+      console.log('Filtering by project ID:', projectFilter);
+      filtered = filtered.filter(story => {
+        console.log(`Story ${story.id}: projectId=${story.projectId} (type: ${typeof story.projectId}), comparing with ${projectFilter} (type: ${typeof projectFilter})`);
+        return story.projectId === projectFilter;
+      });
+      console.log('Stories after project filter:', filtered);
     }
     
     if (statusFilter && statusFilter.trim() !== '') {
+      console.log('Filtering by status:', statusFilter);
       filtered = filtered.filter(story => story.status === statusFilter);
+    
+    
+    
+    if (projectFilter !== null) {
+      
+      filtered = filtered.filter(story => {
+        
+        return story.projectId === projectFilter;
+      });
+      
+    }
+    
+    if (statusFilter && statusFilter.trim() !== '') {
+      
+      filtered = filtered.filter(story => story.status === statusFilter);
+      
     }
     
     return filtered;
@@ -70,6 +94,7 @@ export class StoryComponent implements OnInit {
   private loadProjects(): void {
     this.storyService.getProjects().subscribe({
       next: (projects) => {
+        console.log('Projects loaded:', projects);
         this.projects.set(projects);
       },
       error: (error) => {
@@ -168,7 +193,7 @@ export class StoryComponent implements OnInit {
     }
   }
 
-  deleteStory(id: string): void {
+  deleteStory(id: number): void {
     if (confirm('Are you sure you want to delete this story?')) {
       this.isLoading.set(true);
       this.clearMessages();
@@ -193,7 +218,14 @@ export class StoryComponent implements OnInit {
   filterByProject(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const selectedValue = target.value;
-    this.selectedProjectFilter.set(selectedValue);
+    const parsedValue = selectedValue ? parseInt(selectedValue, 10) : null;
+    console.log('Filter by project - Selected value:', selectedValue, 'Parsed value:', parsedValue);
+    console.log('Current stories:', this.stories());
+    this.selectedProjectFilter.set(parsedValue);
+    
+    
+    this.selectedProjectFilter.set(parsedValue);
+    
   }
 
   filterByStatus(event: Event): void {
@@ -202,17 +234,17 @@ export class StoryComponent implements OnInit {
     this.selectedStatusFilter.set(selectedValue);
   }
 
-  getProjectName(projectId: string): string {
+  getProjectName(projectId: number): string {
     const project = this.projects().find(p => p.id === projectId);
     return project?.name || 'Unknown Project';
   }
 
   hasActiveFilters(): boolean {
-    return this.selectedProjectFilter() !== '' || this.selectedStatusFilter() !== '';
+    return this.selectedProjectFilter() !== null || this.selectedStatusFilter() !== '';
   }
 
   clearFilters(): void {
-    this.selectedProjectFilter.set('');
+    this.selectedProjectFilter.set(null);
     this.selectedStatusFilter.set('');
   }
 

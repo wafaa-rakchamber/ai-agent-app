@@ -1,11 +1,11 @@
 export interface Story {
-  id?: string;
+  id?: number;
   title: string;
   description: string;
   iteration: string;
   status: 'New' | 'inProgress' | 'Closed' | 'Canceled';
   StoryPoint: number;
-  projectId: string;
+  projectId: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -16,5 +16,5 @@ export interface StoryFormData {
   iteration: string;
   status: 'New' | 'inProgress' | 'Closed' | 'Canceled';
   StoryPoint: number;
-  projectId: string;
+  projectId: number;
 }

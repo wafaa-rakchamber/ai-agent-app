@@ -4,13 +4,27 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Project {
-  id: string;
+  id: number;
   name: string;
   description: string;
+  startDate: string;
+  deadLine: string;
   status: string;
   createdAt: string;
   updatedAt: string;
-  userId: string;
+  Stories?: Story[];
+}
+
+export interface Story {
+  id: number;
+  title: string;
+  description: string;
+  iteration: string;
+  status: 'New' | 'inProgress' | 'Closed' | 'Canceled';
+  StoryPoint: number;
+  projectId: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 @Injectable({
