@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Angular Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    container_name: ai-agent-app-frontend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  # Mock Backend API (optional - for development)
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./mock-backend:/app
+    ports:
+      - "3000:3000"
+    container_name: ai-agent-app-backend
+    command: sh -c "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  node_modules:
