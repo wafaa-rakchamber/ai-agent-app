@@ -110,7 +110,6 @@ export class StoryComponent implements OnInit {
     
     this.storyService.getStories().subscribe({
       next: (stories) => {
-        console.log('Stories loaded:', stories);
         this.stories.set(stories);
         this.isLoading.set(false);
       },
