@@ -41,7 +41,6 @@ export class StoryComponent implements OnInit {
     const statusFilter = this.selectedStatusFilter();
     
     console.log('Computing filtered stories - Project filter:', projectFilter, 'Status filter:', statusFilter);
-    console.log('All stories:', filtered);
     
     if (projectFilter !== null) {
       console.log('Filtering by project ID:', projectFilter);
