@@ -4,6 +4,8 @@ export const environment = {
   apiEndpoints: {
     auth: '/api/auth',
     projects: '/api/projects',
+    tasks: '/api/tasks',
+    stories: '/api/stories',
     users: '/api/users',
     health: '/api/health'
   },

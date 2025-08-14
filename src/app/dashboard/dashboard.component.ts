@@ -108,6 +108,10 @@ import { environment } from '../../environments/environment';
                 <span class="feature-icon">📊</span>
                 <span class="feature-text">Projects Management</span>
               </button>
+              <button class="feature-button" (click)="navigateToTasks()">
+                <span class="feature-icon">✅</span>
+                <span class="feature-text">Task Management</span>
+              </button>
               <button class="feature-button" (click)="navigateToTodo()">
                 <span class="feature-icon">📝</span>
                 <span class="feature-text">Todo App</span>
@@ -134,6 +138,12 @@ import { environment } from '../../environments/environment';
               </div>
               <div class="api-item">
                 <strong>Projects Endpoint:</strong> {{ projectsEndpoint }}
+              </div>
+              <div class="api-item">
+                <strong>Tasks Endpoint:</strong> {{ tasksEndpoint }}
+              </div>
+              <div class="api-item">
+                <strong>Stories Endpoint:</strong> {{ storiesEndpoint }}
               </div>
               <div class="api-item">
                 <strong>Token Type:</strong> Bearer
@@ -170,6 +180,8 @@ export class DashboardComponent {
   readonly apiBaseUrl = environment.apiUrl;
   readonly authEndpoint = `${environment.apiUrl}${environment.apiEndpoints.auth}/login`;
   readonly projectsEndpoint = `${environment.apiUrl}${environment.apiEndpoints.projects}`;
+  readonly tasksEndpoint = `${environment.apiUrl}${environment.apiEndpoints.tasks}`;
+  readonly storiesEndpoint = `${environment.apiUrl}${environment.apiEndpoints.stories}`;
   readonly environment = environment.production ? 'Production' : 'Development';
 
   // Test states
@@ -180,6 +192,10 @@ export class DashboardComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  navigateToTasks(): void {
+    this.router.navigate(['/tasks']);
   }
 
   navigateToProjects(): void {
