@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # Angular Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    container_name: ai-agent-app-frontend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

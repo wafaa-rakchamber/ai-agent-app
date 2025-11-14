@@ -36,7 +36,7 @@ export class StoryComponent implements OnInit {
 
   // Computed
   filteredStories = computed(() => {
-    let filtered = this.stories();
+    let filtered = this.stories() || [];
     const projectFilter = this.selectedProjectFilter();
     const statusFilter = this.selectedStatusFilter();
     
@@ -54,22 +54,6 @@ export class StoryComponent implements OnInit {
     if (statusFilter && statusFilter.trim() !== '') {
       console.log('Filtering by status:', statusFilter);
       filtered = filtered.filter(story => story.status === statusFilter);
-    
-    
-    
-    if (projectFilter !== null) {
-      
-      filtered = filtered.filter(story => {
-        
-        return story.projectId === projectFilter;
-      });
-      
-    }
-    
-    if (statusFilter && statusFilter.trim() !== '') {
-      
-      filtered = filtered.filter(story => story.status === statusFilter);
-      
     }
     
     return filtered;

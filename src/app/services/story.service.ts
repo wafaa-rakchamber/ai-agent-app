@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Story, StoryFormData } from '../models/story.interface';
 import { Project } from './api-test.service';
 import { AuthService } from '../auth/auth.service';
+import { MockDataService } from './mock-data.service';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -12,7 +13,9 @@ import { environment } from '../../environments/environment';
 export class StoryService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
+  private readonly mockDataService = inject(MockDataService);
   private readonly baseUrl = environment.apiUrl;
+  private readonly useMockData = true; // Set to false when backend is available
 
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
@@ -29,6 +32,11 @@ export class StoryService {
    * Get all stories
    */
   getStories(): Observable<Story[]> {
+    if (this.useMockData) {
+      console.log('Using mock data for stories');
+      return this.mockDataService.getStories();
+    }
+    
     const currentUser = this.authService.getCurrentUser();
     console.log('Making GET request to:', `${this.baseUrl}/api/stories`, 'for user:', currentUser?.email);
     return this.http.get<Story[]>(`${this.baseUrl}/api/stories`, {
@@ -51,6 +59,11 @@ export class StoryService {
    * Create a new story
    */
   createStory(story: StoryFormData): Observable<Story> {
+    if (this.useMockData) {
+      console.log('Using mock data for creating story');
+      return this.mockDataService.createStory(story);
+    }
+    
     const currentUser = this.authService.getCurrentUser();
     console.log('Making POST request to:', `${this.baseUrl}/api/stories`, 'for user:', currentUser?.email, 'with data:', story);
     return this.http.post<Story>(`${this.baseUrl}/api/stories`, story, {
@@ -62,6 +75,11 @@ export class StoryService {
    * Update an existing story
    */
   updateStory(id: number, story: Partial<StoryFormData>): Observable<Story> {
+    if (this.useMockData) {
+      console.log('Using mock data for updating story');
+      return this.mockDataService.updateStory(id, story);
+    }
+    
     const currentUser = this.authService.getCurrentUser();
     console.log('Making PUT request to:', `${this.baseUrl}/api/stories/${id}`, 'for user:', currentUser?.email, 'with data:', story);
     return this.http.put<Story>(`${this.baseUrl}/api/stories/${id}`, story, {
@@ -73,6 +91,11 @@ export class StoryService {
    * Delete a story
    */
   deleteStory(id: number): Observable<void> {
+    if (this.useMockData) {
+      console.log('Using mock data for deleting story');
+      return this.mockDataService.deleteStory(id);
+    }
+    
     const currentUser = this.authService.getCurrentUser();
     console.log('Making DELETE request to:', `${this.baseUrl}/api/stories/${id}`, 'for user:', currentUser?.email);
     return this.http.delete<void>(`${this.baseUrl}/api/stories/${id}`, {
@@ -84,6 +107,11 @@ export class StoryService {
    * Get all projects for dropdown
    */
   getProjects(): Observable<Project[]> {
+    if (this.useMockData) {
+      console.log('Using mock data for projects');
+      return this.mockDataService.getProjects();
+    }
+    
     const currentUser = this.authService.getCurrentUser();
     console.log('Making GET request to:', `${this.baseUrl}/api/projects`, 'for user:', currentUser?.email);
     return this.http.get<Project[]>(`${this.baseUrl}/api/projects`, {
